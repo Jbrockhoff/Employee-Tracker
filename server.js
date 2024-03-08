@@ -21,13 +21,29 @@ function menu() {
             viewDepartment()
         }; 
 
+        if(res.action === 'View Roles') {
+            viewRoles()
+        };
+
+        if(res.action === 'View Employees') {
+            viewEmployees()
+        };
+
         if(res.action === 'Add Department') {
             addDepartment()
         };
+        if(res.action === 'Add Role') {
+            addRole()
+        };
 
-        if(res.action === 'View Roles') {
-            viewRoles()
-        }
+        if(res.action === 'Add Employee') {
+            addEmployee()
+        };
+
+        if(res.action === 'Update Employee Role') {
+            updateRole()
+        };
+
     }) 
 }
 // TODO: view all depts
@@ -60,6 +76,19 @@ function viewRoles() {
     });
 }
 //TODO: view all employees
+function viewEmployees() {
+    const sql = `SELECT id, title FROM role`;
+
+    db.query(sql, (err, rows) => {
+        if (err) {
+            console.log(err)
+            return;
+        }    
+        console.table(rows)
+        menu();
+
+    });
+}
 
 //TODO: add department
 async function addDepartment() {
@@ -81,6 +110,44 @@ async function addDepartment() {
         return;
       };
       console.log('Department has been added')
+      menu();
+    });
+};
+//TODO add role
+async function addRole() {
+    const res = await inquirer.prompt([
+        {
+            type: 'input',
+            message: "What is the employee's first name?",
+            name: 'firstName'
+        },
+        {
+            type: 'input',
+            message: "What is the employee's last name?",
+            name: 'lastName'
+        },
+        {
+            type: 'input',
+            message: "What is the employee's salary ?",
+            name: 'salary'
+        },
+        {
+            type: 'input',
+            message: 'Which department is this role in?',
+            name: 'departmentID'
+        },
+        
+    ])
+
+    let sql = `INSERT INTO role ('first_name', 'last_name', 'salary', 'department_id') VALUES (?, ?, ?, ?)`;
+    let params = [res.roleName];
+  
+    db.query(sql, params, (err, rows) => {
+      if (err) {
+        console.log(err);
+        return;
+      };
+      console.log('Role has been added')
       menu();
     });
 }
