@@ -44,8 +44,8 @@ function menu() {
             updateRole()
         };
 
-    }) 
-}
+    });
+};
 // TODO: view all depts
   function viewDepartment() {
  
@@ -77,7 +77,7 @@ function viewRoles() {
 }
 //TODO: view all employees
 function viewEmployees() {
-    const sql = `SELECT id, title FROM role`;
+    const sql = `SELECT id, first_name, last_name, role_id FROM employees`;
 
     db.query(sql, (err, rows) => {
         if (err) {
@@ -97,8 +97,7 @@ async function addDepartment() {
             type: 'input',
             message: 'What is the new department name?',
             name: 'departmentName'
-        },
-        
+        }
     ])
 
     let sql = `INSERT INTO department (department_name) VALUES (?)`;
@@ -113,45 +112,51 @@ async function addDepartment() {
       menu();
     });
 };
+
 //TODO add role
-async function addRole() {
+
+//TODO add employee
+async function addEmployee() {
     const res = await inquirer.prompt([
         {
             type: 'input',
             message: "What is the employee's first name?",
             name: 'firstName'
         },
+
         {
             type: 'input',
             message: "What is the employee's last name?",
             name: 'lastName'
         },
+
         {
             type: 'input',
             message: "What is the employee's salary ?",
             name: 'salary'
         },
+
         {
             type: 'input',
-            message: 'Which department is this role in?',
-            name: 'departmentID'
-        },
-        
+            message: 'Who manages this employee?',
+            name: ''
+        }
     ])
 
-    let sql = `INSERT INTO role ('first_name', 'last_name', 'salary', 'department_id') VALUES (?, ?, ?, ?)`;
-    let params = [res.roleName];
+    let sql = `INSERT INTO employees (first_name, last_name, salary) VALUES (?, ?, ?)`;
+    let params = [res.addEmployee];
   
     db.query(sql, params, (err, rows) => {
       if (err) {
         console.log(err);
         return;
       };
-      console.log('Role has been added')
+      console.log('Employee has been added')
       menu();
     });
 }
 
+//TODO Update employee
 
 //TODO: delete departments
 // app.delete('/api/department/:id', (req, res) => {
@@ -179,12 +184,6 @@ async function addRole() {
 // //TODO: delete employees
 // app.delete
 // //TODO: view total utilized budget of a dept (combined salaries of all employees in dept)
-// //app.?
 
 
-// app.use((req, res) => res.setMaxListeners(404).end());
-
-// app.listen(PORT, () => {
-//     console.log(`Server running on port ${PORT}`);
-// });
 menu()
