@@ -33,7 +33,7 @@ function menu() {
 // TODO: view all depts
   function viewDepartment() {
  
-    const sql = `SELECT id, department_name AS department FROM deparment`;
+    const sql = `SELECT id, department_name AS department FROM department`;
 
     db.query(sql, (err, rows) => {
         if (err) {
@@ -66,20 +66,21 @@ async function addDepartment() {
     const res = await inquirer.prompt([
         {
             type: 'input',
-            message: 'What is the new deparment name?',
+            message: 'What is the new department name?',
             name: 'departmentName'
-        }
+        },
+        
     ])
 
     let sql = `INSERT INTO department (department_name) VALUES (?)`;
     let params = [res.departmentName];
   
-    db.query(sql, params, (err, result) => {
+    db.query(sql, params, (err, rows) => {
       if (err) {
         console.log(err);
         return;
       };
-      console.table(rows)
+      console.log('Department has been added')
       menu();
     });
 }
