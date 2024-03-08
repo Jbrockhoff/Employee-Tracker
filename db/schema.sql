@@ -4,8 +4,8 @@ CREATE DATABASE employees_db;
 USE employees_db;
 
 CREATE TABLE department (
-    id    INT          NOT NULL PRIMARY KEY AUTO_INCREMENT;
-    name  VARCHAR(30)  NOT NULL
+    id               INT          NOT NULL PRIMARY KEY AUTO_INCREMENT;
+    department_name  VARCHAR(30)  NOT NULL
 );
 
 CREATE TABLE role (
@@ -16,7 +16,7 @@ CREATE TABLE role (
 
     FOREIGN KEY (department_id_)
     REFERENCES department(id)
-    ON DELETE SET NULL
+      ON DELETE SET NULL
 );
 
 CREATE TABLE employees (
@@ -28,6 +28,6 @@ CREATE TABLE employees (
 
     FOREIGN KEY (role_id)
     REFERENCES role(id)
-    ON DELETE CASCADE
-
+      ON DELETE CASCADE
 )
+/*Do I need to make more tables for handling viewing by manager, dept, etc?
