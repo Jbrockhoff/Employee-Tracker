@@ -32,6 +32,7 @@ function menu() {
         if(res.action === 'Add Department') {
             addDepartment()
         };
+
         if(res.action === 'Add Role') {
             addRole()
         };
@@ -43,10 +44,9 @@ function menu() {
         if(res.action === 'Update Employee Role') {
             updateRole()
         };
-
     });
 };
-// TODO: view all depts
+// To view all depts
   function viewDepartment() {
  
     const sql = `SELECT id, department_name AS department FROM department`;
@@ -61,7 +61,7 @@ function menu() {
         menu();
     });
 }
-//TODO: view all roles
+//To view all roles
 function viewRoles() {
     const sql = `SELECT id, title FROM role`;
 
@@ -75,7 +75,8 @@ function viewRoles() {
 
     });
 }
-//TODO: view all employees
+
+//To view all employees
 function viewEmployees() {
     const sql = `SELECT id, first_name, last_name, role_id FROM employees`;
 
@@ -90,7 +91,7 @@ function viewEmployees() {
     });
 }
 
-//TODO: add department
+//To add department
 async function addDepartment() {
     const res = await inquirer.prompt([
         {
@@ -113,10 +114,8 @@ async function addDepartment() {
     });
 };
 
-//TODO add role
-
-//TODO add employee
-async function addEmployee() {
+//To add role
+async function addRole() {
     const res = await inquirer.prompt([
         {
             type: 'input',
@@ -139,11 +138,52 @@ async function addEmployee() {
         {
             type: 'input',
             message: 'Who manages this employee?',
+            name: 'managerId'
+        }
+    ])
+
+    let sql = `INSERT INTO role (first_name, last_name, salary, manager_id) VALUES (?, ?, ?, ?)`;
+    let params = [res.addRole];
+  
+    db.query(sql, params, (err, rows) => {
+      if (err) {
+        console.log(err);
+        return;
+      };
+      console.log('Role has been added')
+      menu();
+    });
+}
+
+//To add employee
+async function addEmployee() {
+    const res = await inquirer.prompt([
+        {
+            type: 'input',
+            message: "What is the employee's first name?",
+            name: 'firstName'
+        },
+
+        {
+            type: 'input',
+            message: "What is the employee's last name?",
+            name: 'lastName'
+        },
+
+        {
+            type: 'input',
+            message: "What is the employee's salary ?",
+            name: 'salary'
+        },
+
+        {
+            type: 'input',
+            message: 'Which department does this role belong to?',
             name: ''
         }
     ])
 
-    let sql = `INSERT INTO employees (first_name, last_name, salary) VALUES (?, ?, ?)`;
+    let sql = `INSERT INTO employees (first_name, last_name, salary, manager_id) VALUES (?, ?, ?, ?)`;
     let params = [res.addEmployee];
   
     db.query(sql, params, (err, rows) => {
@@ -157,6 +197,8 @@ async function addEmployee() {
 }
 
 //TODO Update employee
+
+
 
 //TODO: delete departments
 // app.delete('/api/department/:id', (req, res) => {
