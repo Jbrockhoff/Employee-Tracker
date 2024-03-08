@@ -1,13 +1,12 @@
 const inquirer= require('inquirer');
 const mysql = require('mysql2');
-const PORT = process.env.PORT || 3001;
 
 const db = mysql.createConnection(
     {
         host: '127.0.0.1',
         user: 'root',
         password: 'LeoKitty2024*',
-        databade: 'employees_db'
+        database: 'employees_db'
     }
 );
 
@@ -20,6 +19,14 @@ function menu() {
     }).then(res => {
         if(res.action === 'View Department') {
             viewDepartment()
+        }; 
+
+        if(res.action === 'Add Department') {
+            addDepartment()
+        };
+
+        if(res.action === 'View Roles') {
+            viewRoles()
         }
     }) 
 }
@@ -53,10 +60,10 @@ function viewRoles() {
     });
 }
 //TODO: view all employees
-app.get
+
 //TODO: add department
-function addDepartment() {
-    inquirer.prompt([
+async function addDepartment() {
+    const res = await inquirer.prompt([
         {
             type: 'input',
             message: 'What is the new deparment name?',
@@ -65,63 +72,51 @@ function addDepartment() {
     ])
 
     let sql = `INSERT INTO department (department_name) VALUES (?)`;
-    let params = [body.department_name];
+    let params = [res.departmentName];
   
     db.query(sql, params, (err, result) => {
       if (err) {
-        res.status(400).json({ error: err.message });
+        console.log(err);
         return;
-      }
-      res.json({
-        message: 'success',
-        data: body
-      });
+      };
+      console.table(rows)
+      menu();
     });
 }
 
-//TODO: add a role
-app.post
-//TODO: add an employee
-app.post
-//TODO: Update an employee role
-app.put
-//TODO: Update employee managers
-app.put
-//TODO: View employees by manager
-app.get
-//TODO: View employees by department
-app.get
+
 //TODO: delete departments
-app.delete('/api/department/:id', (req, res) => {
-    let sql = 'DELETE FROM department WHERE id = ?';
-    let params = [params.id];
+// app.delete('/api/department/:id', (req, res) => {
+//     let sql = 'DELETE FROM department WHERE id = ?';
+//     let params = [params.id];
   
-    db.query(sql, params, (err, result) => {
-      if (err) {
-        res.statusMessage(400).json({ error: res.message });
-      } else if (!result.affectedRows) {
-        res.json({
-          message: 'Department not found'
-        });
-      } else {
-        res.json({
-          message: 'deleted',
-          changes: result.affectedRows,
-          id: params.id
-        });
-      }
-    });
-  });
-//TODO: delete roles
-app.delete
-//TODO: delete employees
-app.delete
-//TODO: view total utilized budget of a dept (combined salaries of all employees in dept)
-//app.?
+//     db.query(sql, params, (err, result) => {
+//       if (err) {
+//         res.statusMessage(400).json({ error: res.message });
+//       } else if (!result.affectedRows) {
+//         res.json({
+//           message: 'Department not found'
+//         });
+//       } else {
+//         res.json({
+//           message: 'deleted',
+//           changes: result.affectedRows,
+//           id: params.id
+//         });
+//       }
+//     });
+//   });
+// //TODO: delete roles
+// app.delete
+// //TODO: delete employees
+// app.delete
+// //TODO: view total utilized budget of a dept (combined salaries of all employees in dept)
+// //app.?
 
 
-app.use((req, res) => res.setMaxListeners(404).end());
+// app.use((req, res) => res.setMaxListeners(404).end());
 
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+// app.listen(PORT, () => {
+//     console.log(`Server running on port ${PORT}`);
+// });
+menu()
