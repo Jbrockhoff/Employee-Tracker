@@ -10,6 +10,7 @@ const db = mysql.createConnection(
     }
 );
 
+//Creates menu for user input
 function menu() {
     inquirer.prompt({ 
         name: 'action',
@@ -46,6 +47,7 @@ function menu() {
         };
     });
 };
+
 // To view all depts
   function viewDepartment() {
  
@@ -61,6 +63,7 @@ function menu() {
         menu();
     });
 }
+
 //To view all roles
 function viewRoles() {
     const sql = `SELECT id, title FROM role`;
@@ -112,48 +115,39 @@ async function addDepartment() {
       console.log('Department has been added')
       menu();
     });
-};
+}
 
 //To add role
 async function addRole() {
     const res = await inquirer.prompt([
         {
             type: 'input',
-            message: "What is the employee's first name?",
-            name: 'firstName'
+            message: "Enter the role title:",
+            name: 'title'
         },
-
         {
             type: 'input',
-            message: "What is the employee's last name?",
-            name: 'lastName'
-        },
-
-        {
-            type: 'input',
-            message: "What is the employee's salary ?",
+            message: "Enter the salary for this role:",
             name: 'salary'
         },
-
         {
             type: 'input',
-            message: 'Who manages this employee?',
-            name: 'managerId'
+            message: 'Enter the department ID:',
+            name: 'departmentId'
         }
-    ])
+    ]);
 
-    let sql = `INSERT INTO role (first_name, last_name, salary, manager_id) VALUES (?, ?, ?, ?)`;
-    let params = [res.addRole];
-  
+    let sql = `INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?, ?)`;
+    let params = [res.title, res.salary, res.departmentId];
     db.query(sql, params, (err, rows) => {
-      if (err) {
-        console.log(err);
-        return;
-      };
-      console.log('Role has been added')
-      menu();
-    });
-}
+              if (err) {
+                console.log(err);
+                return;
+              };
+              console.log('Role has been added')
+              menu();
+            });
+        };
 
 //To add employee
 async function addEmployee() {
@@ -178,8 +172,8 @@ async function addEmployee() {
 
         {
             type: 'input',
-            message: 'Which department does this role belong to?',
-            name: ''
+            message: 'What is the department ID for this employee?',
+            name: 'managerId'
         }
     ])
 
@@ -228,4 +222,4 @@ async function addEmployee() {
 // //TODO: view total utilized budget of a dept (combined salaries of all employees in dept)
 
 
-menu()
+menu();
