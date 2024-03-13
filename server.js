@@ -192,30 +192,29 @@ async function addEmployee() {
 }
 
 //TODO Update employee
-async function updateRole() {
-    db.query('SELECT * FROM employees', async (err, employees) => {
-        if (err) {
-            console.log(err);
-            return;
-          };
-         const updateEmployee = await inquirer.prompt ([
-            {
-                type: 'list',
-                message: 'Which employee would you like to update?',
-                choices: employees.map((e) => ({name: `${e.first_name} ${e.last_name}`, value: e.id})),
-                name: 'employee_id'
-            }
-         ])
-        
-         console.log(updateEmployee.employee_id)
+// async function updateRole() {
+//     db.query('SELECT * FROM employees', async (err, employees) => {
+//         if (err) {
+//             console.log(err);
+//             return;
+//           };
+//          const updateEmployee = await inquirer.prompt ([
+//             {
+//                 type: 'list',
+//                 message: 'Which employee would you like to update?',
+//                 choices: employees.map((e) => ({name: `${e.first_name} ${e.last_name}`, value: e.id})),
+//                 name: 'employee_id'
+//             }
+//          ])
+    
+//          console.log(updateEmployee.employee_id)
+
          //prompt store in const = newRole
+            
          //prompt that grabs all of the roles (another db.query to select * from roles)
          //similar map to 205 for choices to map role name key and role_id
          //update query set role_id WHERE id = updateEmployee.employee_id 
-    }
-    )
-
-}
+//  nop
 
 
 //TODO: delete departments
