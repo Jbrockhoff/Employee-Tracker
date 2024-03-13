@@ -50,7 +50,6 @@ function menu() {
 
 // To view all depts
   function viewDepartment() {
- 
     const sql = `SELECT id, department_name AS department FROM department`;
 
     db.query(sql, (err, rows) => {
@@ -132,13 +131,14 @@ async function addRole() {
         },
         {
             type: 'input',
-            message: 'Enter the department ID:',
-            name: 'departmentId'
+            message: 'Enter department ID:',
+            name: 'department_id'
         }
     ]);
 
-    let sql = `INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?, ?)`;
-    let params = [res.title, res.salary, res.departmentId];
+    let sql = `INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)`;
+    let params = [res.title, res.salary, res.department_id];
+
     db.query(sql, params, (err, rows) => {
               if (err) {
                 console.log(err);
@@ -155,13 +155,13 @@ async function addEmployee() {
         {
             type: 'input',
             message: "What is the employee's first name?",
-            name: 'firstName'
+            name: 'first_name'
         },
 
         {
             type: 'input',
             message: "What is the employee's last name?",
-            name: 'lastName'
+            name: 'last_name'
         },
 
         {
@@ -172,13 +172,14 @@ async function addEmployee() {
 
         {
             type: 'input',
-            message: 'What is the department ID for this employee?',
-            name: 'managerId'
+            message: "Who is this employee's manager?",
+            name: 'manager_id'
         }
     ])
 
     let sql = `INSERT INTO employees (first_name, last_name, salary, manager_id) VALUES (?, ?, ?, ?)`;
-    let params = [res.addEmployee];
+    let params = Object.values(res)
+    console.log(params)
   
     db.query(sql, params, (err, rows) => {
       if (err) {
@@ -191,7 +192,30 @@ async function addEmployee() {
 }
 
 //TODO Update employee
+async function updateRole() {
+    db.query('SELECT * FROM employees', async (err, employees) => {
+        if (err) {
+            console.log(err);
+            return;
+          };
+         const updateEmployee = await inquirer.prompt ([
+            {
+                type: 'list',
+                message: 'Which employee would you like to update?',
+                choices: employees.map((e) => ({name: `${e.first_name} ${e.last_name}`, value: e.id})),
+                name: 'employee_id'
+            }
+         ])
+        
+         console.log(updateEmployee.employee_id)
+         //prompt store in const = newRole
+         //prompt that grabs all of the roles (another db.query to select * from roles)
+         //similar map to 205 for choices to map role name key and role_id
+         //update query set role_id WHERE id = updateEmployee.employee_id 
+    }
+    )
 
+}
 
 
 //TODO: delete departments
