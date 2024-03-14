@@ -7,7 +7,7 @@ VALUES ('Deli'),
        ('Frozen'),
        ('OGP');
 
-INSERT INTO role (title, salary, department_id) 
+INSERT INTO roles (title, salary, department_id) 
 VALUES ('Manager', 100000, 1), 
        ('Assistant Manager', 50000.00, 1),
        ('Associate', 40000, 1),
@@ -33,10 +33,13 @@ VALUES ('Manager', 100000, 1),
        ('Secondary Delivery Assistant', 80000, 5),
        ('Substitute Driver', 50000, 5);
 
- INSERT INTO employees (first_name, last_name, salary) VALUES
-       ('John', 'Doe', 40000),
-       ('Michael', 'Jordan', 'Associate', 50000),
-       ('Sarah', 'Smith', 'Manager', 100000),
-       ('Henry', 'Ford', 'Primary Delivery Assistant' 90000),
-       ('Lisa', 'Frank' 'Fish Sales Associate', 35000)
+INSERT INTO employees (first_name, last_name, role_id, salary) 
+VALUES ('John', 'Doe', 1, 40000),
+       ('Sarah', 'Smith', 1, 100000);
+
+INSERT INTO employees (first_name, last_name, role_id, salary, manager_id) 
+VALUES 
+       ('Michael', 'Jordan', 3, 50000, 1),
+       ('Henry', 'Ford', 10, 90000, 2),
+       ('Lisa', 'Frank', 11, 35000, 2);
 

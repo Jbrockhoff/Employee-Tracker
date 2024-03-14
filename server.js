@@ -134,7 +134,7 @@ async function addRole() {
         {
             type: 'input',
             message: 'Enter department ID:',
-            name: 'departmentId'
+            name: 'department_id'
         }
     ]);
 
@@ -165,6 +165,11 @@ async function addEmployee() {
             message: "What is the employee's last name?",
             name: 'last_name'
         },
+        {
+            type: 'input',
+            message: "What is the employee's role ID?",
+            name: 'role_id'
+        },
 
         {
             type: 'input',
@@ -179,7 +184,7 @@ async function addEmployee() {
         }
     ])
 
-    let sql = `INSERT INTO employees (first_name, last_name, role_id, salary, department_id) VALUES (?, ?, ?, ?, ?)`;
+    let sql = `INSERT INTO employees (first_name, last_name, role_id, salary, manager_id) VALUES (?, ?, ?, ?, ?)`;
     let params = Object.values(res)
     console.log(params)
   
