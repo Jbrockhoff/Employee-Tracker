@@ -65,7 +65,7 @@ function menu() {
 
 //To view all roles
 function viewRoles() {
-    const sql = `SELECT id, title FROM role`;
+    const sql = `SELECT id, title, salary, department_id AS department FROM roles`;
 
     db.query(sql, (err, rows) => {
         if (err) {
@@ -138,7 +138,7 @@ async function addRole() {
         }
     ]);
 
-    let sql = `INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)`;
+    let sql = `INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?)`;
     let params = [res.title, res.salary, res.department_id];
 
     db.query(sql, params, (err, rows) => {
@@ -184,7 +184,7 @@ async function addEmployee() {
         }
     ])
 
-    let sql = `INSERT INTO employees (first_name, last_name, role_id, salary, manager_id) VALUES (?, ?, ?, ?, ?)`;
+    let sql = `INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)`;
     let params = Object.values(res)
     console.log(params)
   
