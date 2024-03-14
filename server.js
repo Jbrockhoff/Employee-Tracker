@@ -213,6 +213,12 @@ async function updateRole() {
                 name: 'employee_id'
             }
          ])
+         
+         
+        
+    // db.query('SELECT * FROM roles', async (err, roles) => {
+
+    //      })
 
          console.log(updateEmployee.employee_id)
          //prompt store in const = newRole
@@ -223,12 +229,6 @@ async function updateRole() {
     )
 
 }
-
-         //prompt store in const = newRole
-         //prompt that grabs all of the roles (another db.query to select * from roles)
-         //similar map to 205 for choices to map role name key and role_id
-         //update query set role_id WHERE id = updateEmployee.employee_id 
-
 
 
 //TODO: delete departments
