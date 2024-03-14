@@ -15,18 +15,18 @@ function menu() {
     inquirer.prompt({ 
         name: 'action',
         message: 'What would you like to do?',
-        choices: ['View Department', 'View Roles', 'View Employees', 'Add Department', 'Add Role', 'Add Employee', 'Update Employee Role'],
+        choices: ['View All Departments', 'View All Roles', 'View All Employees', 'Add Department', 'Add Role', 'Add Employee', 'Update Employee Role'],
         type: 'list'
     }).then(res => {
-        if(res.action === 'View Department') {
+        if(res.action === 'View All Departments') {
             viewDepartment()
         }; 
 
-        if(res.action === 'View Roles') {
+        if(res.action === 'View All Roles') {
             viewRoles()
         };
 
-        if(res.action === 'View Employees') {
+        if(res.action === 'View All Employees') {
             viewEmployees()
         };
 
@@ -79,8 +79,9 @@ function viewRoles() {
 }
 
 //To view all employees
+//need job title, department_name, and manager_id
 function viewEmployees() {
-    const sql = `SELECT id, first_name, last_name, role_id FROM employees`;
+    const sql = `SELECT id, first_name, last_name, salary AS Salary FROM employees`;
 
     db.query(sql, (err, rows) => {
         if (err) {
@@ -183,8 +184,8 @@ async function addEmployee() {
             name: 'manager_id'
         }
     ])
-
-    let sql = `INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)`;
+///WHY IS IT ASKING FOR SALARY
+    let sql = `INSERT INTO employees (first_name, last_name, role_id, salary, manager_id) VALUES (?, ?, ?, ?, ?)`;
     let params = Object.values(res)
     console.log(params)
   
