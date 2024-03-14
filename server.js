@@ -254,33 +254,4 @@ async function updateRole() {
     });
 }
 
-
-//TODO: delete departments
-// app.delete('/api/department/:id', (req, res) => {
-//     let sql = 'DELETE FROM department WHERE id = ?';
-//     let params = [params.id];
-  
-//     db.query(sql, params, (err, result) => {
-//       if (err) {
-//         res.statusMessage(400).json({ error: res.message });
-//       } else if (!result.affectedRows) {
-//         res.json({
-//           message: 'Department not found'
-//         });
-//       } else {
-//         res.json({
-//           message: 'deleted',
-//           changes: result.affectedRows,
-//           id: params.id
-//         });
-//       }
-//     });
-//   });
-// //TODO: delete roles
-// app.delete
-// //TODO: delete employees
-// app.delete
-// //TODO: view total utilized budget of a dept (combined salaries of all employees in dept)
-
-
 menu();
