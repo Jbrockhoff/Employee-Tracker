@@ -79,7 +79,7 @@ function viewRoles() {
 }
 
 //To view all employees
-//need job title, department_name, and manager_id
+//need department and manager name and not ID
 function viewEmployees() {
     const sql = `SELECT e.id, e.first_name AS First, e.last_name AS Last, r.title AS Title, r.department_id AS Department, r.salary AS Salary, e.manager_id AS Manager
                  FROM employees e
