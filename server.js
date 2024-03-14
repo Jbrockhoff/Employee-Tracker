@@ -50,7 +50,7 @@ function menu() {
 
 // To view all depts
   function viewDepartment() {
-    const sql = `SELECT id, department_name AS department FROM department`;
+    const sql = `SELECT id, department_name AS Department FROM department`;
 
     db.query(sql, (err, rows) => {
         if (err) {
@@ -65,7 +65,7 @@ function menu() {
 
 //To view all roles
 function viewRoles() {
-    const sql = `SELECT id, title, salary, department_id AS department FROM roles`;
+    const sql = `SELECT id, title AS Title, salary AS Salary, department_id AS Department FROM roles`;
 
     db.query(sql, (err, rows) => {
         if (err) {
@@ -81,19 +81,20 @@ function viewRoles() {
 //To view all employees
 //need job title, department_name, and manager_id
 function viewEmployees() {
-    const sql = `SELECT id, first_name, last_name, salary AS Salary FROM employees`;
+    const sql = `SELECT e.id, e.first_name AS First, e.last_name AS Last, r.title AS Title, r.department_id AS Department, r.salary AS Salary, e.manager_id AS Manager
+                 FROM employees e
+                 JOIN roles r ON e.role_id = r.id`;
 
     db.query(sql, (err, rows) => {
         if (err) {
-            console.log(err)
+            console.log(err);
             return;
-        }    
-        console.table(rows)
+        }
+        
+        console.table(rows);
         menu();
-
     });
 }
-
 //To add department
 async function addDepartment() {
     const res = await inquirer.prompt([
@@ -184,7 +185,7 @@ async function addEmployee() {
             name: 'manager_id'
         }
     ])
-///WHY IS IT ASKING FOR SALARY
+
     let sql = `INSERT INTO employees (first_name, last_name, role_id, salary, manager_id) VALUES (?, ?, ?, ?, ?)`;
     let params = Object.values(res)
     console.log(params)
@@ -199,36 +200,57 @@ async function addEmployee() {
     });
 }
 
-//TODO Update employee
+//To Update employee
 async function updateRole() {
+    // Select employees
     db.query('SELECT * FROM employees', async (err, employees) => {
         if (err) {
             console.log(err);
             return;
-          };
-         const updateEmployee = await inquirer.prompt ([
+        }
+
+        // Prompt user to select an employee to update
+        const updateEmployee = await inquirer.prompt([
             {
                 type: 'list',
                 message: 'Which employee would you like to update?',
-                choices: employees.map((e) => ({name: `${e.first_name} ${e.last_name}`, value: e.id})),
+                choices: employees.map((e) => ({ name: `${e.first_name} ${e.last_name}`, value: e.id })),
                 name: 'employee_id'
             }
-         ])
-         
-         
-        
-    // db.query('SELECT * FROM roles', async (err, roles) => {
+        ]);
 
-    //      })
+        // Select roles
+        db.query('SELECT * FROM roles', async (err, roles) => {
+            if (err) {
+                console.log(err);
+                return;
+            }
 
-         console.log(updateEmployee.employee_id)
-         //prompt store in const = newRole
-         //prompt that grabs all of the roles (another db.query to select * from roles)
-         //similar map to 205 for choices to map role name key and role_id
-         //update query set role_id WHERE id = updateEmployee.employee_id 
-    }
-    )
+            // Prompt user to select a new role for the employee
+            const updateRole = await inquirer.prompt([
+                {
+                    type: 'list',
+                    message: 'Select a new role for the employee:',
+                    choices: roles.map((r) => ({ name: r.title, value: r.id })),
+                    name: 'role_id'
+                }
+            ]);
 
+            // Update the employee's role in the database
+            db.query(
+                'UPDATE employees SET role_id = ? WHERE id = ?',
+                [updateRole.role_id, updateEmployee.employee_id],
+                (err, result) => {
+                    if (err) {
+                        console.log(err);
+                        return;
+                    }
+                    console.log('Employee role updated successfully!')
+                    menu();
+                }
+            );
+        });
+    });
 }
 
 
